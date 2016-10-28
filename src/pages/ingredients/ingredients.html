@@ -1,0 +1,49 @@
+<!--
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Ingredients</ion-title>
+  </ion-navbar>
+</ion-header>
+-->
+<ion-content class="ingredients-page">
+  <ion-grid>
+    <ion-row class="list">
+      <ion-content>
+        <ion-list>
+          <button ion-item *ngFor="let ingredient of selectedIngredients" (click)="selectedTapped($event, ingredient)">
+            {{ingredient.ingredient}}
+            <div class="item-note" item-right>
+              {{ingredient.rank}}
+            </div>
+          </button>
+        </ion-list>
+      </ion-content>
+    </ion-row>
+
+    <ion-row class="split-bar">
+      <ion-col width-75>
+        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="setFilteredItems()">
+        </ion-searchbar>
+      </ion-col>
+      <ion-col width-25>
+        <button ion-button (click)="reset()">Reset</button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row class="list">
+      <ion-content>
+        <ion-list>
+          <button ion-item *ngFor="let ingredient of filteredRecommendedIngredients" (click)="recommendedTapped($event, ingredient)">
+            {{ingredient.ingredient}}
+            <div class="item-note" item-right>
+              {{ingredient.rank}}
+            </div>
+          </button>
+        </ion-list>
+      </ion-content>
+    </ion-row>
+  </ion-grid>
+</ion-content>
