@@ -11,12 +11,12 @@
 <ion-content class="ingredients-page">
   <ion-grid>
     <ion-row class="list">
-      <ion-content>
+      <ion-content id="selected">
         <ion-list>
-          <button ion-item *ngFor="let ingredient of selectedIngredients" (click)="selectedTapped($event, ingredient)">
-            {{ingredient.ingredient}}
+          <button ion-item *ngFor="let pairing of selectedPairings" (click)="selectedTapped($event, pairing)">
+            {{pairing.ingt}}
             <div class="item-note" item-right>
-              {{ingredient.rank}}
+              {{pairing.score}}
             </div>
           </button>
         </ion-list>
@@ -25,7 +25,7 @@
 
     <ion-row class="split-bar">
       <ion-col width-75>
-        <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="setFilteredItems()">
+        <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="filterPairings()">
         </ion-searchbar>
       </ion-col>
       <ion-col width-25>
@@ -34,15 +34,18 @@
     </ion-row>
 
     <ion-row class="list">
-      <ion-content>
+      <ion-content id="recommended">
         <ion-list>
-          <button ion-item *ngFor="let ingredient of filteredRecommendedIngredients" (click)="recommendedTapped($event, ingredient)">
-            {{ingredient.ingredient}}
+          <button ion-item *ngFor="let pairing of recommendedPairings" (click)="recommendedTapped($event, pairing)">
+            {{pairing.ingt}}
             <div class="item-note" item-right>
-              {{ingredient.rank}}
+              {{pairing.score}}
             </div>
           </button>
         </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+          <ion-infinite-scroll-content></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </ion-content>
     </ion-row>
   </ion-grid>

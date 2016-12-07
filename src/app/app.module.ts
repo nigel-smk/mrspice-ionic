@@ -5,7 +5,7 @@ import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
 import { ItemDetailsPage } from '../pages/item-details/item-details';
 import { ListPage } from '../pages/list/list';
 import { IngredientsPage } from '../pages/ingredients/ingredients';
-import { QueryService } from '../services/query-service.service';
+import { PairingsService } from '../services/pairings.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +26,6 @@ import { QueryService } from '../services/query-service.service';
     ListPage,
     IngredientsPage
   ],
-  providers: [QueryService]
+  providers: [PairingsService]
 })
 export class AppModule {}

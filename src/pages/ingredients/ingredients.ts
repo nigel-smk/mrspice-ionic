@@ -1,76 +1,69 @@
-import {Component, OnInit} from "@angular/core";
-
-import { NavController, NavParams } from 'ionic-angular';
-
-import { QueryService } from '../../services/query-service.service';
+import {Component, OnInit, ViewChild} from "@angular/core";
+import {NavController, NavParams} from 'ionic-angular';
+import { PairingsService } from '../../services/pairings.service';
+import {Pairing} from "../../models/pairing";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   templateUrl: 'ingredients.html'
 })
 export class IngredientsPage implements OnInit{
 
-  recommendedIngredients: any[];
-  filteredRecommendedIngredients: any[];
-  selectedIngredients: any[];
-  searchTerm: string;
+  pairingsSubscription: Subscription
+  recommendedPairings: Pairing[];
+  selectedPairings: Pairing[];
+  filterTerm: string;
   errorMessage: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private queryService: QueryService) {
-    this.selectedIngredients = [];
-    this.searchTerm = '';
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, private pairingsService: PairingsService) {
+    this.selectedPairings = [];
+    this.recommendedPairings = [];
+    this.filterTerm = '';
   }
 
   ngOnInit(): void {
-    this.getPairings([]);
+    this.pairingsSubscription = this.pairingsService.pairings.subscribe(
+      (pairings: Pairing[]) => {
+        this.recommendedPairings = pairings;
+      });
+    this.pairingsService.requestPairings([]);
   }
 
-  //TODO create an IngredientResult dto class
-  recommendedTapped(event, ingredient) {
-    this.selectedIngredients.push(ingredient);
-    this.getPairings(this.selectedIngredients.map(function(currentValue, index, array){
-      return currentValue.ingredient;
-    }));
-    this.searchTerm = '';
+  recommendedTapped(event, ingt: Pairing) {
+    this.selectedPairings.push(ingt);
+    this.pairingsService.requestPairings(this.selectedPairings);
+    this.filterTerm = '';
+    this.filterPairings();
   }
 
-  selectedTapped(event, ingredient) {
-    let removedIndex = this.selectedIngredients.findIndex((i): boolean => {
-      return i.ingredient == ingredient.ingredient;
-    });
-    let before = this.selectedIngredients.slice(0, removedIndex);
-    let after = this.selectedIngredients.slice(removedIndex + 1, this.selectedIngredients.length);
-    this.selectedIngredients = before.concat(after);
-    
-    this.getPairings(this.selectedIngredients.map(function(currentValue, index, array){
-      return currentValue.ingredient;
-    }));
+  selectedTapped(event, pairing: Pairing) {
+    this.removeFromSelected(pairing);
   }
 
   reset(event) {
-    this.selectedIngredients = [];
-    this.recommendedIngredients = [];
-    this.getPairings([]);
+    this.selectedPairings = [];
+    this.pairingsService.requestPairings([]);
   }
 
-  getPairings(ingredients: string[]): void {
-    this.queryService.getPairings(ingredients)
-      .subscribe(
-        //slice result to show only 100 items
-        //TODO implement lazy loading
-        pairings => {
-          this.recommendedIngredients = pairings.slice(0, 1000);
-          //TODO this is cottage hacking. Need to implement the filtering proper. With observable.
-          this.filteredRecommendedIngredients = this.recommendedIngredients;
-        },
-        error => this.errorMessage = <any>error
-    );
+  filterPairings() {
+    this.pairingsService.setFilter(this.filterTerm);
   }
 
-  setFilteredItems(): void {
-    this.filteredRecommendedIngredients = this.recommendedIngredients.filter((item) => {
-      return item.ingredient.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
-    });
+  doInfinite(infiniteScroll) {
+    this.pairingsService.more();
+    infiniteScroll.complete();
+  }
 
+  removeFromSelected(pairing: Pairing) {
+    let removeIndex = this.selectedPairings.map((selected: Pairing) => {
+      return selected.ingt;
+    }).indexOf(pairing.ingt);
+
+    if (~removeIndex) {
+      this.selectedPairings = this.selectedPairings.splice(removeIndex, 1);
+      this.pairingsService.requestPairings(this.selectedPairings);
+    }
   }
 
 }
