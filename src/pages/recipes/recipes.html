@@ -14,13 +14,20 @@
 
 
 <ion-content padding>
-  <ion-card *ngFor="let recipe of recipes">
-    <img [src]="recipe.imageUrlsBySize['90']"/>
-    <ion-card-header>
-      {{ recipe.recipeName }}
-    </ion-card-header>
+  <ion-grid>
+    <ion-row *ngFor="let row of grid">
+      <ion-col *ngFor="let recipe of row">
+        <ion-card>
+          <img [src]="recipe.imageUrlsBySize['90']"/>
+          <ion-card-header>
+            {{ recipe.recipeName }}
+          </ion-card-header>
 
-    <ion-card-content>
-    </ion-card-content>
-  </ion-card>
+          <ion-card-content>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
 </ion-content>
