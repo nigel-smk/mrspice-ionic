@@ -1,15 +1,16 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {NavController, NavParams} from 'ionic-angular';
 import { PairingsService } from '../../services/pairings.service';
 import {Pairing} from "../../models/pairing";
-import {Observable, Subscription} from "rxjs";
+import {RecipesPage} from "../recipes/recipes";
+//import {Subscription} from "rxjs";
 
 @Component({
   templateUrl: 'ingredients.html'
 })
 export class IngredientsPage implements OnInit{
 
-  pairingsSubscription: Subscription
+  //pairingsSubscription: Subscription
   recommendedPairings: Pairing[];
   selectedPairings: Pairing[];
   filterTerm: string;
@@ -23,7 +24,7 @@ export class IngredientsPage implements OnInit{
   }
 
   ngOnInit(): void {
-    this.pairingsSubscription = this.pairingsService.pairings.subscribe(
+    this.pairingsService.pairings.subscribe(
       (pairings: Pairing[]) => {
         this.recommendedPairings = pairings;
       });
@@ -34,7 +35,6 @@ export class IngredientsPage implements OnInit{
     this.selectedPairings.push(ingt);
     this.pairingsService.requestPairings(this.selectedPairings);
     this.filterTerm = '';
-    this.filterPairings();
   }
 
   selectedTapped(event, pairing: Pairing) {
@@ -43,6 +43,7 @@ export class IngredientsPage implements OnInit{
 
   reset(event) {
     this.selectedPairings = [];
+    this.filterTerm = ''
     this.pairingsService.requestPairings([]);
   }
 
@@ -57,13 +58,19 @@ export class IngredientsPage implements OnInit{
 
   removeFromSelected(pairing: Pairing) {
     let removeIndex = this.selectedPairings.map((selected: Pairing) => {
-      return selected.ingt;
-    }).indexOf(pairing.ingt);
+      return selected.name;
+    }).indexOf(pairing.name);
 
-    if (~removeIndex) {
-      this.selectedPairings = this.selectedPairings.splice(removeIndex, 1);
+    if (removeIndex != -1) {
+      this.selectedPairings.splice(removeIndex, 1);
       this.pairingsService.requestPairings(this.selectedPairings);
     }
+  }
+
+  recipes() {
+    this.navCtrl.push(RecipesPage, {
+      selected: this.selectedPairings
+    });
   }
 
 }

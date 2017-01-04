@@ -8,15 +8,15 @@
   </ion-navbar>
 </ion-header>
 -->
-<ion-content class="ingredients-page">
+<ion-content class="ingredients-page hide-on-keyboard-open">
   <ion-grid>
     <ion-row class="list">
       <ion-content id="selected">
         <ion-list>
-          <button ion-item *ngFor="let pairing of selectedPairings" (click)="selectedTapped($event, pairing)">
-            {{pairing.ingt}}
+          <button ion-item *ngFor="let selected of selectedPairings" (click)="selectedTapped($event, selected)">
+            {{selected.name}}
             <div class="item-note" item-right>
-              {{pairing.score}}
+              {{selected.score}}
             </div>
           </button>
         </ion-list>
@@ -24,26 +24,29 @@
     </ion-row>
 
     <ion-row class="split-bar">
-      <ion-col width-75>
+      <ion-col width-50>
         <ion-searchbar [(ngModel)]="filterTerm" (ionInput)="filterPairings()">
         </ion-searchbar>
       </ion-col>
       <ion-col width-25>
         <button ion-button (click)="reset()">Reset</button>
       </ion-col>
+      <ion-col width-25>
+        <button ion-button (click)="recipes()">Recipes</button>
+      </ion-col>
     </ion-row>
 
     <ion-row class="list">
       <ion-content id="recommended">
         <ion-list>
-          <button ion-item *ngFor="let pairing of recommendedPairings" (click)="recommendedTapped($event, pairing)">
-            {{pairing.ingt}}
+          <button ion-item *ngFor="let recommended of recommendedPairings" (click)="recommendedTapped($event, recommended)">
+            {{recommended.name}}
             <div class="item-note" item-right>
-              {{pairing.score}}
+              {{recommended.score}}
             </div>
           </button>
         </ion-list>
-        <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+        <ion-infinite-scroll threshold="50%" (ionInfinite)="doInfinite($event)">
           <ion-infinite-scroll-content></ion-infinite-scroll-content>
         </ion-infinite-scroll>
       </ion-content>

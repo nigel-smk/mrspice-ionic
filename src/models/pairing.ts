@@ -1,11 +1,11 @@
 export class Pairing {
 
-  public ingt: string;
+  public name: string;
   public score: number;
 
   constructor(data: any = {}) {
-    this.ingt = data.ingt || null;
-    this.score = data.score || null;
+    this.name = data.name || null;
+    this.score = data.score || 0;
   }
 
 }

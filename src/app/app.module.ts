@@ -6,6 +6,8 @@ import { ItemDetailsPage } from '../pages/item-details/item-details';
 import { ListPage } from '../pages/list/list';
 import { IngredientsPage } from '../pages/ingredients/ingredients';
 import { PairingsService } from '../services/pairings.service';
+import {RecipesPage} from "../pages/recipes/recipes";
+import {RecipesService} from "../services/recipes.service";
 
 @NgModule({
   declarations: [
@@ -13,7 +15,8 @@ import { PairingsService } from '../services/pairings.service';
     HelloIonicPage,
     ItemDetailsPage,
     ListPage,
-    IngredientsPage
+    IngredientsPage,
+    RecipesPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -24,8 +27,9 @@ import { PairingsService } from '../services/pairings.service';
     HelloIonicPage,
     ItemDetailsPage,
     ListPage,
-    IngredientsPage
+    IngredientsPage,
+    RecipesPage
   ],
-  providers: [PairingsService]
+  providers: [PairingsService, RecipesService]
 })
 export class AppModule {}
