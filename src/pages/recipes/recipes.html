@@ -16,7 +16,7 @@
 <ion-content padding>
   <ion-grid>
     <ion-row *ngFor="let row of grid">
-      <ion-col *ngFor="let recipe of row">
+      <ion-col width-50 *ngFor="let recipe of row">
         <ion-card>
           <img [src]="recipe.imageUrlsBySize['90']"/>
           <ion-card-header>

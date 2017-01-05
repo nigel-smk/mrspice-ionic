@@ -32,10 +32,14 @@ export class RecipesPage {
 
       // fill grid with rows of two
       let y = 0;
+      this.grid[0] = new Array<Recipe>();
       for (let i = 0; i < recipes.length; i++) {
         let x = i % 2;
         this.grid[y][x] = recipes[i];
-        if (x == 1) y +=1;
+        if (x == 1) {
+          y +=1;
+          this.grid[y] = new Array<Recipe>();
+        }
       }
       console.log(this.grid);
     });
