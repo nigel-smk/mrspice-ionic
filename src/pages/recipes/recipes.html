@@ -17,7 +17,7 @@
   <ion-grid>
     <ion-row *ngFor="let row of grid">
       <ion-col width-50 *ngFor="let recipe of row">
-        <ion-card>
+        <ion-card (click)="thumbnailClicked($event, recipe)">
           <img [src]="recipe.imageUrlsBySize['90']"/>
           <ion-card-header>
             {{ recipe.recipeName }}

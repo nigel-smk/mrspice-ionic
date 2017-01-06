@@ -3,6 +3,7 @@ import {NavController, NavParams} from 'ionic-angular';
 import {RecipesService} from "../../services/recipes.service";
 import {Recipe} from "../../models/recipe";
 import {Pairing} from "../../models/pairing";
+import {RecipeDetailsPage} from "../recipe-details/recipe-details";
 
 /*
   Generated class for the RecipesPage page.
@@ -31,6 +32,7 @@ export class RecipesPage {
       this.recipes = recipes;
 
       // fill grid with rows of two
+      this.grid = [];
       let y = 0;
       this.grid[0] = new Array<Recipe>();
       for (let i = 0; i < recipes.length; i++) {
@@ -45,6 +47,13 @@ export class RecipesPage {
     });
     this.recipesService.requestRecipes(this.selected);
 
+  }
+
+  thumbnailClicked(event, recipe: Recipe) {
+    let recipe_id = recipe.id;
+    this.navCtrl.push(RecipeDetailsPage, {
+      selected: recipe_id
+    });
   }
 
 }
