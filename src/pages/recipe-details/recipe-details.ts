@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-framework/ionic';
-import {NavController, NavParams} from 'ionic-angular';
+import {NavController, NavParams, Platform} from 'ionic-angular';
+import {InAppBrowser} from 'ionic-native';
 import {RecipeDetailsService} from "../../services/recipe-details.service";
 import {RecipeDetails} from "../../models/RecipeDetails";
 
@@ -20,7 +20,7 @@ export class RecipeDetailsPage {
   public recipe_id: string;
   public recipeDetails: RecipeDetails;
 
-  constructor(public navCtrl: NavController, private navParams: NavParams, private recipeDetailsService: RecipeDetailsService) {
+  constructor(public navCtrl: NavController, private navParams: NavParams, private recipeDetailsService: RecipeDetailsService, private platform: Platform) {
     this.recipe_id = navParams.get('selected');
     this.recipeDetails = new RecipeDetails();
   }
@@ -33,7 +33,11 @@ export class RecipeDetailsPage {
   }
 
   fullRecipe() {
-
+    let url = this.recipeDetails.source.sourceRecipeUrl;
+    this.platform.ready().then(() => {
+      let browser = new InAppBrowser(url, '_system');
+      browser.show();
+    })
   }
 
 }

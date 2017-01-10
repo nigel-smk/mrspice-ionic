@@ -11,16 +11,16 @@
 <ion-content class="ingredients-page hide-on-keyboard-open">
   <ion-grid>
     <ion-row class="list">
-      <ion-content id="selected">
-        <ion-list>
-          <button ion-item *ngFor="let selected of selectedPairings" (click)="selectedTapped($event, selected)">
-            {{selected.name}}
-            <div class="item-note" item-right>
-              {{selected.score}}
-            </div>
-          </button>
-        </ion-list>
-      </ion-content>
+        <ion-content id="selected">
+          <ion-list>
+            <button ion-item *ngFor="let selected of selectedPairings" (click)="selectedTapped($event, selected)">
+              {{selected.name}}
+              <div class="item-note" item-right>
+                {{selected.score}}
+              </div>
+            </button>
+          </ion-list>
+        </ion-content>
     </ion-row>
 
     <ion-row class="split-bar">
